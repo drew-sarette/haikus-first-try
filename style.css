@@ -1,0 +1,27 @@
+:root {
+    --main-bg-color: blanchedalmond;
+    --main-text-color: black;
+    --neutral-border-color: black;
+    --active-text-color: rgb(21, 159, 21);
+    --active-bg-color: white;
+    --active-border-color: lightgrey;
+    --important-text-color: darkgreen;
+}
+
+body {
+    background-color: var(--main-bg-color);
+}
+
+.banner {
+    display: flex;
+}
+
+ul {
+    flex-basis: 40%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.display-none {
+    display: none;
+}
