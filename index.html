@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haikus</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Haikus</h1>
+    <div class="input-container"><input id="current-word" type="text"></div>
+    <div id="synonyms" class="display-none">
+        
+    </div>
+    <form action="submit" class="display-none">
+        <div>
+            <label for="haiku-title">title:</label>
+            <input type="text" id="haiku-title">
+        </div>
+        <div>
+            <label for="author">author:</label>
+            <input type="text" id="author">
+        </div>
+        <div>
+            <label for="tags">tags:</label>
+            <input type="text" id="tags">
+        </div>
+            <button type="submit">submit</button>
+            <button type="reset">clear</button>
+        </div>
+    </form>
+    <div class="button-container"><button id="done" class="main-buttons">Done!</button><button id="clear" class="main-buttons">clear</button></div>
+    <script src="index.js"></script>
+</body>
+</html>
