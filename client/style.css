@@ -1,0 +1,84 @@
+:root {
+    --main-bg-color: blanchedalmond;
+    --main-text-color: black;
+    --neutral-border-color: black;
+    --active-text-color: rgb(21, 159, 21);
+    --active-bg-color: white;
+    --active-border-color: lightgrey;
+    --important-text-color: darkgreen;
+}
+
+body {
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
+    font-size: 16px;
+}
+
+/* Header Styles */
+.banner {
+    display: flex;
+    justify-content: space-between;
+}
+
+#menu-btn {
+    justify-self: right;
+    background-color: inherit;
+    border: none;
+    width: 40px;
+}
+
+.menu-item {
+    list-style: none;
+}
+
+/*  Haiku input  */
+
+#haiku-container {
+    background: lightgrey;
+    height: 7em;
+    padding: 1em;
+    display: flex;
+    gap: 1em;
+}
+
+.haiku-word {
+    border: 1px solid black;
+    border-radius: 2px;
+    padding: .2em;
+}
+
+#current-word {
+    order: 1;
+}
+
+/* Buttons */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+}
+
+/* Submit Form */
+form {
+    border: 1px solid black;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    position: absolute;
+    bottom: 20%;
+    left: 10%;
+    right: 10%;
+}
+
+.form-component {
+    display: flex;
+}
+
+.form-component > label {
+    flex-basis: 30%
+}
+
+.display-none {
+    display: none;
+}
