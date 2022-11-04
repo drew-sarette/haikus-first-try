@@ -47,7 +47,7 @@ function addWord(wordToAdd) {
         synonyms: ["dummy", "dummy2", "dummy3"],
         htmlElement: divToAppend
     }
-    newWordObj.htmlElement.addEventListener("click", showSynonyms);
+    newWordObj.htmlElement.addEventListener("click", () => showSynonyms(newWordObj));
     haiku.push(newWordObj);
     haikuContainer.appendChild(newWordObj.htmlElement);
     currentWordInput.value = "";
@@ -61,20 +61,20 @@ function deleteLastWord() {
     }
 }
 
-function showSynonyms(ev) {
-    console.log(ev.target);
-    const n = haiku.indexOf(selectedWord);
-    const listOfSynonyms = selectedWord.synonyms;
+function showSynonyms(wordObj) {
+    //wordObj is the original newWordObj saved in a closure!
+    synonymContainer.innerHTML = "";
+    const listOfSynonyms = wordObj.synonyms;
     for (synonym of listOfSynonyms){
         const synonymButton = document.createElement("button");
         synonymButton.textContent = synonym;
-        synonymButton.addEventListener("click", substituteSynonym(synonymButton.textContent, n));
+        synonymButton.addEventListener("click", () => substituteSynonym(synonym, wordObj));
         synonymContainer.appendChild(synonymButton);
     }
     synonymContainer.classList.toggle("display-none");
 }
 
-function substituteSynonym(wordToSubstitute, n) {
+function substituteSynonym(wordToSubstitute, originalWordObj) {
     // fetch syllables and synonyms of wordToSubstitute from server
     const changedWordDiv = document.createElement("div");
     changedWordDiv.textContent = wordToSubstitute;
@@ -85,7 +85,7 @@ function substituteSynonym(wordToSubstitute, n) {
         synonyms: ["dummy", "dummy2", "dummy3"],
         htmlElement: changedWordDiv
     }
-    haiku[n] = changedWordObj;
+    originalWordObj.htmlElement = changedWordDiv;
+    alert(originalWordObj.htmlElement.textContent);
+    haiku[haiku.indexOf(originalWordObj)] = changedWordObj;
 }
-
-
