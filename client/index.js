@@ -1,91 +1,134 @@
-// Globals
+// Globals ==============================================================
 const haiku = [];
+let isHaikuValid;
 const haikuContainer = document.getElementById("haiku-container");
+const line1 = document.getElementById("line-1");
+const line2 = document.getElementById("line-2");
+const line3 = document.getElementById("line-3");
 const currentWordInput = document.getElementById("current-word");
 const synonymContainer = document.getElementById("synonyms");
 
-// Basic page functionality
+// Basic page functionality ============================================
 function toggleMenu() {
     document.querySelector("nav").classList.toggle("display-none");
 }
 
 function showSubmitForm() {
-    document.querySelector("form").classList.toggle("display-none");
+    if (isHaikuValid) {
+        document.querySelector("form").classList.toggle("display-none");
+    } else {
+        alert("Please enter a 5-7-5 haiku.");
+    }
 }
 
 function closeSubmitForm(ev) {
-    // ev.preventDefault();
     document.querySelector("form").classList.toggle("display-none");
 }
 
 function clearHaiku() {
     currentWordInput.value = "";
-    while (haiku.length > 0) {
-        haikuContainer.removeChild(haiku.pop().htmlElement);
-    }
+    line1.innerHTML = null;
+    line2.innerHTML = null;
+    line3.innerHTML = null;
 }
 
-// Haiku input
+// Haiku input ===========================================================
 
 currentWordInput.addEventListener("keydown", ev => {
-    if (ev.code === "Space") { 
-        addWord(currentWordInput.value);
+    if (ev.code === "Space" || ev.code === "Enter") { 
+        addWord(currentWordInput.value.trim().toLowerCase());
+        currentWordInput.value = "";
     } else if (ev.code === "Backspace") {
         deleteLastWord();
     }
 });
 
-function addWord(wordToAdd) {
-    // verify valid input
-    // fetch syllables, synonyms from server
-    const divToAppend = document.createElement("div");
-    divToAppend.textContent = wordToAdd;
-    divToAppend.classList.add("haiku-word");
-    const newWordObj = {
-        word: wordToAdd,
-        syllables: 2,
-        synonyms: ["dummy", "dummy2", "dummy3"],
-        htmlElement: divToAppend
+function dummyResponse(word){
+    const newSpan = document.createElement("span");
+    newSpan.textContent = word;
+    newSpan.classList.add("haiku-word")
+    return {
+        word: word,
+        syllables: 1,
+        synonyms: ["foo1", "foo2", "foo3"],
+        htmlElement: newSpan
     }
-    newWordObj.htmlElement.addEventListener("click", () => showSynonyms(newWordObj));
-    haiku.push(newWordObj);
-    haikuContainer.appendChild(newWordObj.htmlElement);
-    currentWordInput.value = "";
+}
+
+function addWord(wordToAdd) {
+    const newWordObj = dummyResponse(wordToAdd);
+    if (wordToAdd.trim()){
+        haiku.push(newWordObj);
+        updateHaikuDisplay();
+    }
 }
 
 function deleteLastWord() {
-    if (currentWordInput.value != "") {
-        currentWordInput.value = "";
+    if (currentWordInput.value.trim() != "") {
+        currentWordInput.value = null;
     } else {
-        haikuContainer.removeChild(haiku.pop().htmlElement);
+        console.log(haiku.pop());
+        updateHaikuDisplay();
     }
 }
 
-function showSynonyms(wordObj) {
-    //wordObj is the original newWordObj saved in a closure!
-    synonymContainer.innerHTML = "";
-    const listOfSynonyms = wordObj.synonyms;
-    for (synonym of listOfSynonyms){
-        const synonymButton = document.createElement("button");
-        synonymButton.textContent = synonym;
-        synonymButton.addEventListener("click", () => substituteSynonym(synonym, wordObj));
-        synonymContainer.appendChild(synonymButton);
+function updateHaikuDisplay() {
+    line1.innerHTML = null;
+    line2.innerHTML = null;
+    line3.innerHTML = null;
+    const [line1IsValid, line2IsValid, line3IsValid] = checkHaiku();
+    let runningSyllableCount = 0;
+    for (word of haiku) {
+        runningSyllableCount += word.syllables
+        if (runningSyllableCount < 6) {
+            if (line1IsValid) {
+                word.htmlElement.classList.add("valid-word");
+            } else {
+                word.htmlElement.classList.remove("valid-word");
+            }
+            line1.appendChild(word.htmlElement);
+        } else if  (runningSyllableCount < 13) {
+            if (line2IsValid) {
+                word.htmlElement.classList.add("valid-word");
+            } else {
+                word.htmlElement.classList.remove("valid-word");
+            }
+            line2.appendChild(word.htmlElement);
+        } else if  (runningSyllableCount < 18) {
+            if (line3IsValid) {
+                word.htmlElement.classList.add("valid-word");
+            } else {
+                word.htmlElement.classList.remove("valid-word");
+            }
+            line3.appendChild(word.htmlElement);
+        } else {
+            word.htmlElement.classList.remove("valid-word")
+            line3.appendChild(word.htmlElement);
+        }   
     }
-    synonymContainer.classList.toggle("display-none");
 }
 
-function substituteSynonym(wordToSubstitute, originalWordObj) {
-    // fetch syllables and synonyms of wordToSubstitute from server
-    const changedWordDiv = document.createElement("div");
-    changedWordDiv.textContent = wordToSubstitute;
-    changedWordDiv.classList.add("haiku-word");
-    const changedWordObj = {  
-        word: wordToSubstitute,
-        syllables: 2,
-        synonyms: ["dummy", "dummy2", "dummy3"],
-        htmlElement: changedWordDiv
+function checkHaiku() {
+    let isFirstLineValid = false;
+    let isSecondLineValid = false;
+    let isThirdLineValid = false;
+    let runningSyllableCount = 0;
+    for (word of haiku)  {
+        runningSyllableCount += word.syllables;
+        haikuContainer.appendChild(word.htmlElement);
+        if (runningSyllableCount === 5) {
+            isFirstLineValid = true;
+        } else if (runningSyllableCount === 12 && isFirstLineValid) {
+            isSecondLineValid = true;
+        } else if (runningSyllableCount === 17 && isSecondLineValid) {
+            isThirdLineValid = true;
+        } else if (runningSyllableCount > 17)
+            isThirdLineValid = false;
     }
-    originalWordObj.htmlElement = changedWordDiv;
-    alert(originalWordObj.htmlElement.textContent);
-    haiku[haiku.indexOf(originalWordObj)] = changedWordObj;
+    if (isFirstLineValid && isSecondLineValid && isThirdLineValid) {
+        isHaikuValid = true;
+    } else {
+        isHaikuValid = false;
+    } 
+    return [isFirstLineValid, isSecondLineValid, isThirdLineValid];
 }
