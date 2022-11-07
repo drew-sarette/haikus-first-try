@@ -27,12 +27,13 @@ function closeSubmitForm(ev) {
 
 function clearHaiku() {
     currentWordInput.value = "";
-    line1.innerHTML = null;
+    line1.innerHTML = null; 
     line2.innerHTML = null;
     line3.innerHTML = null;
-    while (haiku.length) {
-        haiku.pop();
-    }
+    synonymContainer.innerHTML = null;
+    synonymContainer.classList.add("display-none");
+    while (haiku.length) {haiku.pop();}
+
 }
 
 // Haiku input ===========================================================
