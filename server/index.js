@@ -2,20 +2,20 @@ const express = require("express");
 const app = express();
 const PORT = 5001;
 
-
 require("dotenv").config();
-const axios = require("axios");
+const wordRepo = require("./repos/wordRepo.js");
 
 app.get("/", (req, res) => {
+    console.log("get request recieved");
     const wordRepo = require('./repos/wordRepo.js');
-    const wordList = wordRepo.get(function (data) {
+    wordRepo.get(function (data) {
         res.status(200).json({
             "status": 200,
             "statusText": "OK",
             "message": "Word list retrieved.",
             "data": data
         });
-    }, function(err) {
+    }, function (err) {
         res.status(500).json({
             "status": 500,
             "statusText": "Server error",
@@ -26,25 +26,33 @@ app.get("/", (req, res) => {
 });
 
 app.get("/:word", (req, res) => {
-    console.log(req.params.word);
-    res.sendStatus(200);
+    wordRepo.lookUpWord(req.params.word, function (matchingEntry) {
+        res.status(200).json({
+            "status": 200,
+            "statusText": "OK",
+            "message": "Local lookup successful.",
+            "data": matchingEntry
+        });
+    }, function (err) {
+        console.log(err);
+        wordRepo.externalLookUp(req.params.word, function (newEntry) {
+            wordRepo.addWord(newEntry);
+            res.status(200).json({
+                "status": 200,
+                "statusText": "OK",
+                "message": "WordsAPI lookup successfull.",
+                "data": newEntry
+            });
+        }, function (err) {
+            res.status(404).json({
+                "status": 404,
+                "statusText": "Lookup unsuccessful",
+                "message": "Word not found.",
+                "error": err
+            })
+        });
+    });
 });
 
-// const word = "popsicle";
-// const options = {
-//   method: 'GET',
-//   url: `https://wordsapiv1.p.rapidapi.com/words/${word}/syllables`,
-//   headers: {
-//     'X-RapidAPI-Key': process.env.WORDSAPI_KEY,
-//     'X-RapidAPI-Host': 'wordsapiv1.p.rapidapi.com'
-//   }
-// };
-
-// axios.request(options).then(function (response) {
-// 	console.log(response.data);
-// }).catch(function (error) {
-// 	console.error(error);
-// });
-
-
 app.listen(PORT);
+console.log(`server listening on port ${PORT}`);
