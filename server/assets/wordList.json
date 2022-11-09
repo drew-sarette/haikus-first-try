@@ -1,5 +1,1 @@
-[
-    { "word": "the", "syllables": 1, "synonyms": [] },
-    { "word": "a", "syllables": 1, "synonyms": [] },
-    { "word": "house", "syllables": 1, "synonyms": ["home", "abode", "shack", "hut"] }
-]
+[{"word":"who","syllables":1,"synonyms":["w.h.o."]},{"word":"bamboozle","syllables":3,"synonyms":["hoodwink","snow"]},{"word":"and","syllables":1,"synonyms":[]},{"word":"not","syllables":1,"synonyms":["non"]},{"word":"but","syllables":1,"synonyms":["just","merely","only","simply"]},{"word":"word","syllables":1,"synonyms":["logos","son","intelligence","news","tidings","discussion","give-and-take","countersign","parole","password","watchword","bible","book","scripture","parole","articulate","formulate","phrase"]},{"word":"weather","syllables":2,"synonyms":["brave","endure","upwind","conditions"]},{"word":"blasphemy","syllables":3,"synonyms":["desecration","profanation","sacrilege"]},{"word":"alligator","syllables":4,"synonyms":["gator"]}]

@@ -1,4 +1,4 @@
-const { match } = require('assert');
+
 const fs = require('fs');
 const FILE_NAME = "./assets/wordList.json";
 const axios = require("axios");
@@ -29,49 +29,63 @@ const wordRepo = {
                 }
                 else {
                     console.log("lookup failed");
-                    
                     reject(err);
                 }
             }
         });
     },
-    addWord: function (newEntry, resolve, reject) {
-        console.log("new entry added to word list");
+    externalLookUp: function (word, resolve, reject) {
+        const options = {
+            method: 'GET',
+            url: `https://wordsapiv1.p.rapidapi.com/words/${word}`,
+            headers: {
+                'X-RapidAPI-Key': process.env.WORDSAPI_KEY,
+                'X-RapidAPI-Host': 'wordsapiv1.p.rapidapi.com'
+            }
+        };
+        axios.request(options).then(function (response) {
+            console.log("Requesting");
+            let listOfSynonyms = [];
+            response.data.results.forEach(element => {
+                if (element.synonyms) {
+                    element.synonyms.filter(w => !(w.includes(" "))).forEach(w => listOfSynonyms.push(w));
+                }
+            });
+            let numSyllables = 1;
+            if (response.data.hasOwnProperty("syllables")) {
+                numSyllables = response.data.syllables.count;
+            }
+            const newEntry = {
+                "word": word,
+                "syllables": numSyllables,
+                "synonyms": listOfSynonyms
+            }
+            resolve(newEntry);
+        }).catch(function (error) {
+            console.log(error);
+            reject(error);
+        });
+    },
+    addWord: function (newEntry) {
+        console.log("Adding new entry to dictionary");
+        fs.readFile(FILE_NAME, function (err, data) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                let wordList = JSON.parse(data);
+                wordList.push(newEntry);
+                fs.writeFile(FILE_NAME, JSON.stringify(wordList), function (err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+            }
+        });
+
     }
 }
 
-function externalLookUp(word) {
-    console.log("external syllable lookup");
-    const options = {
-        method: 'GET',
-        url: `https://wordsapiv1.p.rapidapi.com/words/${word}/syllables`,
-        headers: {
-            'X-RapidAPI-Key': process.env.WORDSAPI_KEY,
-            'X-RapidAPI-Host': 'wordsapiv1.p.rapidapi.com'
-        }
-    }
-    axios.request(options).then(function (response) {
-        return response.data;
-    }).catch(function (err) {
-        console.log(err);
-    });
-}
 
-function externalSynonymLookUp(word) {
-    console.log("external synonym lookup");
-    const options = {
-        method: 'GET',
-        url: `https://wordsapiv1.p.rapidapi.com/words/${word}/syllables`,
-        headers: {
-            'X-RapidAPI-Key': process.env.WORDSAPI_KEY,
-            'X-RapidAPI-Host': 'wordsapiv1.p.rapidapi.com'
-        }
-    }
-    axios.request(options).then(function (response) {
-        return response.data;
-    }).catch(function (err) {
-        console.log(err);
-    });
-}
 
 module.exports = wordRepo;

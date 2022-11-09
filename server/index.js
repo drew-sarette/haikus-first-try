@@ -1,8 +1,6 @@
 const express = require("express");
 const app = express();
 const PORT = 5001;
-
-require("dotenv").config();
 const wordRepo = require("./repos/wordRepo.js");
 
 app.get("/", (req, res) => {
@@ -26,6 +24,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/:word", (req, res) => {
+    console.log("lookup request recieved.");
     wordRepo.lookUpWord(req.params.word, function (matchingEntry) {
         res.status(200).json({
             "status": 200,
@@ -35,19 +34,20 @@ app.get("/:word", (req, res) => {
         });
     }, function (err) {
         console.log(err);
+        console.log("Checking WordsAPI");
         wordRepo.externalLookUp(req.params.word, function (newEntry) {
-            wordRepo.addWord(newEntry);
             res.status(200).json({
                 "status": 200,
                 "statusText": "OK",
-                "message": "WordsAPI lookup successfull.",
+                "message": "WordsAPI lookup successful.",
                 "data": newEntry
             });
+            wordRepo.addWord(newEntry);
         }, function (err) {
             res.status(404).json({
                 "status": 404,
-                "statusText": "Lookup unsuccessful",
-                "message": "Word not found.",
+                "statusText": "Not found",
+                "message": "Word lookup failed",
                 "error": err
             })
         });
@@ -55,4 +55,4 @@ app.get("/:word", (req, res) => {
 });
 
 app.listen(PORT);
-console.log(`server listening on port ${PORT}`);
+console.log(`Server listening on port ${PORT}`);
