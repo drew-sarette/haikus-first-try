@@ -1,9 +1,29 @@
 const express = require("express");
 const app = express();
+const PORT = 5001;
 
 
 require("dotenv").config();
 const axios = require("axios");
+
+app.get("/", (req, res) => {
+    const wordRepo = require('./repos/wordRepo.js');
+    const wordList = wordRepo.get(function (data) {
+        res.status(200).json({
+            "status": 200,
+            "statusText": "OK",
+            "message": "Word list retrieved.",
+            "data": data
+        });
+    }, function(err) {
+        res.status(500).json({
+            "status": 500,
+            "statusText": "Server error",
+            "message": "Failed to retrieve word list.",
+            "error": err
+        })
+    });
+});
 
 app.get("/:word", (req, res) => {
     console.log(req.params.word);
@@ -27,4 +47,4 @@ app.get("/:word", (req, res) => {
 // });
 
 
-app.listen(5001);
+app.listen(PORT);
