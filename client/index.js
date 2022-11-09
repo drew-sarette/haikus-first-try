@@ -47,10 +47,19 @@ currentWordInput.addEventListener("keydown", ev => {
     }
 });
 
-function dummyResponse(word) {
+function lookUp(word) {
+    const url = `http://localhost:${PORT}/${word}`;
+    const result = {};
     const newSpan = document.createElement("span");
     newSpan.textContent = word;
     newSpan.classList.add("haiku-word")
+
+    fetch(url).then(response => response.json())
+	.then(response => {
+        console.log(response)
+    })
+	.catch(err => console.error(err));
+    
     return {
         word: word,
         syllables: 1,
