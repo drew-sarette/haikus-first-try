@@ -7,6 +7,7 @@ const line2 = document.getElementById("line-2");
 const line3 = document.getElementById("line-3");
 const currentWordInput = document.getElementById("current-word");
 const synonymContainer = document.getElementById("synonym-container");
+const PORT = 5001;
 
 // Basic page functionality ============================================
 function toggleMenu() {
@@ -27,12 +28,12 @@ function closeSubmitForm(ev) {
 
 function clearHaiku() {
     currentWordInput.value = "";
-    line1.innerHTML = null; 
+    line1.innerHTML = null;
     line2.innerHTML = null;
     line3.innerHTML = null;
     synonymContainer.innerHTML = null;
     synonymContainer.classList.add("display-none");
-    while (haiku.length) {haiku.pop();}
+    while (haiku.length) { haiku.pop(); }
 
 }
 
@@ -47,35 +48,30 @@ currentWordInput.addEventListener("keydown", ev => {
     }
 });
 
-function lookUp(word) {
-    const url = `http://localhost:${PORT}/${word}`;
-    const result = {};
-    const newSpan = document.createElement("span");
-    newSpan.textContent = word;
-    newSpan.classList.add("haiku-word")
-
-    fetch(url).then(response => response.json())
-	.then(response => {
-        console.log(response)
-    })
-	.catch(err => console.error(err));
-    
-    return {
-        word: word,
-        syllables: 1,
-        synonyms: ["foo1", "foo2", "foo3"],
-        htmlElement: newSpan
-    }
+async function lookUp(word) {
+    const endpoint = new URL(`http://localhost:${PORT}/${word}`);
+    const response = await fetch(endpoint);
+    const result = await response.json();
+    return result.data;
 }
 
-function addWord(wordToAdd) {
+async function addWord(wordToAdd) {
+
     if (wordToAdd.trim()) {
-        const newWordObj = dummyResponse(wordToAdd);
+        let newWordObj = await lookUp(wordToAdd);
+        const newSpan = document.createElement("span");
+        newSpan.textContent = wordToAdd;
+        newSpan.classList.add("haiku-word");
+        newWordObj.htmlElement = newSpan;
+
         let newIndex = haiku.length;
         newWordObj.htmlElement.addEventListener("click", () => showSynonyms(newWordObj.synonyms, newIndex));
+        console.log(newWordObj);
         haiku.push(newWordObj);
+        console.log(haiku);
         updateHaikuDisplay();
     }
+
 }
 
 function deleteLastWord() {
@@ -162,7 +158,7 @@ function showSynonyms(arrOfSynonyms, i) {
 }
 
 function substituteSynonym(synonym, i) {
-    const newWordObj = dummyResponse(synonym);
+    const newWordObj = lookUp(synonym);
     newWordObj.htmlElement.addEventListener("click", () => showSynonyms(newWordObj.synonyms, i));
     haiku[i] = newWordObj;
     updateHaikuDisplay();
