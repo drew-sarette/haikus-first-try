@@ -1,6 +1,8 @@
+import { haikuRepo } from './haikuRepo.js';
 // Globals ==============================================================
-const haiku = [];
-let isHaikuValid;
+//const haiku = [];
+let isHaikuValid = true;
+
 const haikuContainer = document.getElementById("haiku-container");
 const line1 = document.getElementById("line-1");
 const line2 = document.getElementById("line-2");
@@ -33,18 +35,26 @@ function clearHaiku() {
     line3.innerHTML = null;
     synonymContainer.innerHTML = null;
     synonymContainer.classList.add("display-none");
-    while (haiku.length) { haiku.pop(); }
+    haikuRepo.eraseHaiku();
 
 }
 
 // Haiku input ===========================================================
 
 currentWordInput.addEventListener("keydown", ev => {
+    ev.preventDefault();
+    ev.stopPropagation();
     if (ev.code === "Space" || ev.code === "Enter") {
         addWord(currentWordInput.value.trim().toLowerCase());
         currentWordInput.value = "";
-    } else if (ev.code === "Backspace") {
+    }
+    else if (ev.code === "Backspace") {
         deleteLastWord();
+
+    }
+    else {
+        console.log(ev.key);
+        currentWordInput.value += ev.key;
     }
 });
 
@@ -53,6 +63,11 @@ async function lookUp(word) {
     const response = await fetch(endpoint);
     const result = await response.json();
     return result.data;
+    // return {
+    //     word: "test",
+    //     syllables: 3,
+    //     synonyms: ["quiz", "trial"]
+    // }
 }
 
 async function addWord(wordToAdd) {
@@ -64,11 +79,9 @@ async function addWord(wordToAdd) {
         newSpan.classList.add("haiku-word");
         newWordObj.htmlElement = newSpan;
 
-        let newIndex = haiku.length;
+        let newIndex = haikuRepo.getHaiku().length;
         newWordObj.htmlElement.addEventListener("click", () => showSynonyms(newWordObj.synonyms, newIndex));
-        console.log(newWordObj);
-        haiku.push(newWordObj);
-        console.log(haiku);
+        haikuRepo.addWord(newWordObj);
         updateHaikuDisplay();
     }
 
@@ -78,16 +91,18 @@ function deleteLastWord() {
     if (currentWordInput.value.trim() != "") {
         currentWordInput.value = null;
     } else {
-        haiku.pop();
+        haikuRepo.deleteLastWord()
         updateHaikuDisplay();
     }
 }
 
 function updateHaikuDisplay() {
+    const haiku = haikuRepo.getHaiku();
+    console.log(haiku);
     line1.innerHTML = null;
     line2.innerHTML = null;
     line3.innerHTML = null;
-    const [line1IsValid, line2IsValid, line3IsValid] = checkHaiku();
+    const [line1IsValid, line2IsValid, line3IsValid] = haikuRepo.checkHaiku();
     let runningSyllableCount = 0;
     for (let i = 0; i < haiku.length; i++) {
         runningSyllableCount += haiku[i].syllables;
@@ -119,48 +134,23 @@ function updateHaikuDisplay() {
     }
 }
 
-function checkHaiku() {
-    let isFirstLineValid = false;
-    let isSecondLineValid = false;
-    let isThirdLineValid = false;
-    let runningSyllableCount = 0;
-    for (word of haiku) {
-        runningSyllableCount += word.syllables;
-        if (runningSyllableCount === 5) {
-            isFirstLineValid = true;
-        } else if (runningSyllableCount === 12 && isFirstLineValid) {
-            isSecondLineValid = true;
-        } else if (runningSyllableCount === 17 && isSecondLineValid) {
-            isThirdLineValid = true;
-        } else if (runningSyllableCount > 17)
-            isThirdLineValid = false;
-    }
-    if (isFirstLineValid && isSecondLineValid && isThirdLineValid) {
-        isHaikuValid = true;
-    } else {
-        isHaikuValid = false;
-    }
-    return [isFirstLineValid, isSecondLineValid, isThirdLineValid];
-}
-
-function showSynonyms(arrOfSynonyms, i) {
+function showSynonyms(arrOfSynonyms, index) {
     synonymContainer.innerHTML = null;
     arrOfSynonyms.forEach(synonym => {
         const btn = document.createElement("btn");
         btn.textContent = synonym;
         btn.classList.add("synonym-button");
-        console.log(i);
 
-        btn.addEventListener("click", () => substituteSynonym(synonym, i));
+        btn.addEventListener("click", () => substituteSynonym(synonym, index));
         synonymContainer.appendChild(btn);
     });
     synonymContainer.classList.remove("display-none");
 }
 
-function substituteSynonym(synonym, i) {
-    const newWordObj = lookUp(synonym);
-    newWordObj.htmlElement.addEventListener("click", () => showSynonyms(newWordObj.synonyms, i));
-    haiku[i] = newWordObj;
+async function substituteSynonym(synonym, index) {
+    const wordObj = await lookUp(synonym);
+    wordObj.htmlElement.addEventListener("click", () => showSynonyms(wordObj.synonyms, index));
+    haikuRepo.substituteSynonym(wordObj, index)
     updateHaikuDisplay();
     synonymContainer.classList.add("display-none");
     synonymContainer.innerHTML = null;
