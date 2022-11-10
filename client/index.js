@@ -76,12 +76,10 @@ async function addWord(wordToAdd) {
         newSpan.textContent = newWordObj.word;
         newSpan.classList.add("haiku-word");
         newWordObj.htmlElement = newSpan;
-        console.log(newWordObj);
         let newIndex = haiku.length;
         newWordObj.htmlElement.addEventListener("click", () => showSynonyms(newWordObj.synonyms, newIndex));
         haiku.push(newWordObj);
         updateHaikuDisplay();
-        console.log(haiku);
     }
 
 }
@@ -96,7 +94,6 @@ function deleteLastWord() {
 }
 
 function checkHaiku () {
-    console.log("checkHaiku");
     let isFirstLineValid = false;
     let isSecondLineValid = false;
     let isThirdLineValid = false;
@@ -169,9 +166,14 @@ function showSynonyms(arrOfSynonyms, index) {
     synonymContainer.classList.remove("display-none");
 }
 
-function substituteSynonym(synonym, index) {
-    const wordObj = lookUp(synonym);
-    wordObj.htmlElement.addEventListener("click", () => showSynonyms(wordObj.synonyms, index));
+async function substituteSynonym(synonym, index) {
+    const wordObj = await lookUp(synonym);
+    const newSpan = document.createElement("span");
+    newSpan.classList.add("haiku-word");
+    newSpan.addEventListener("click", () => showSynonyms(wordObj.synonyms, index));
+    newSpan.textContent = synonym;
+    wordObj.htmlElement = newSpan;
+    console.log(wordObj);
     haiku[index] = wordObj;
     updateHaikuDisplay();
     synonymContainer.classList.add("display-none");
