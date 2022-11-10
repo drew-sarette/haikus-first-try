@@ -41,7 +41,7 @@ function clearHaiku() {
 
 // Haiku input ===========================================================
 
-currentWordInput.addEventListener("keydown", ev => {
+currentWordInput.addEventListener("keydown", function (ev) {
     ev.preventDefault();
     ev.stopPropagation();
     if (ev.code === "Space" || ev.code === "Enter") {
