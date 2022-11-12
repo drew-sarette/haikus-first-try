@@ -1,16 +1,15 @@
 :root {
-    --main-bg-color: blanchedalmond;
-    --main-text-color: black;
-    --neutral-border-color: black;
-    --active-text-color: rgb(21, 159, 21);
-    --active-bg-color: white;
-    --active-border-color: lightgrey;
-    --important-text-color: darkgreen;
+    --bg-color-primary: blanchedalmond;
+    --bg-color-secondary: lightgray;
+    --bg-color-button: firebrick;
+    --accent-color: black;
+    --text-color: black;
+    --highlight-color: red;
 }
 
 body {
-    background-color: var(--main-bg-color);
-    color: var(--main-text-color);
+    background-color: var(--bg-color-primary);
+    color: var(--text-color);
     font-size: 16px;
 }
 
@@ -34,9 +33,20 @@ body {
 /*  Haiku input  */
 
 #haiku-container {
-    background: lightgrey;
+    background: var(--bg-color-secondary);
     height: 7em;
     padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+    justify-content: space-between;
+    height: fit-content;
+    margin-bottom: 1em;
+}
+
+.haiku-line {
+    display: flex; 
+    gap:.6em;
 }
 
 .haiku-word {
@@ -51,6 +61,19 @@ body {
 
 #current-word {
     order: 1;
+}
+
+#synonym-container {
+    background-color: var(--bg-color-secondary);
+    margin-bottom: 1em;
+    display: flex;
+    gap: 1 em;
+    padding: .2em;
+}
+
+.synonym-button {
+    background-color: var(--bg-color-button);
+
 }
 
 /* Buttons */
