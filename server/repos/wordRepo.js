@@ -28,8 +28,8 @@ const wordRepo = {
                     resolve(matchingEntry);
                 }
                 else {
-                    console.log("lookup failed");
-                    reject(err);
+                    console.log("Local lookup failed");
+                    reject(new Error(""));
                 }
             }
         });

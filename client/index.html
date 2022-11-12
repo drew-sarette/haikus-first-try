@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +8,7 @@
     <title>Haikus</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <header>
         <div class="banner">
@@ -22,34 +24,44 @@
         </nav>
     </header>
     <div id="haiku-container">
-        <div id="line-1" class="haiku-line" ></div>
-        <div id="line-2" class="haiku-line" ></div>
-        <div id="line-3" class="haiku-line" ></div>
-        <input id="current-word" type="text" spellcheck="true">
+        <div id="line-1" class="haiku-line">
+            <input id="current-word" type="text" spellcheck="true">
+        </div>
+        <div id="line-2" class="haiku-line"></div>
+        <div id="line-3" class="haiku-line"></div>
     </div>
-    <div id="synonym-container" class="display-none"></div>
-    <form action="submit" class="display-none">
-        <div class="form-component">
-            <label for="haiku-title">title:</label>
-            <input type="text" id="haiku-title">
+    <div id="synonym-popup" class="display-none modal">
+        <button class="close-button" type="button" onclick="hideSynonyms()">X</button>
+        <div id="synonym-container">
+
         </div>
-        <div class="form-component">
-            <label for="author">author:</label>
-            <input type="text" id="author">
-        </div>
-        <div class="form-component">
-            <label for="tags">tags:</label>
-            <input type="text" id="tags">
-        </div class="button-container">
+    </div>
+    <div id="form-popup" class="modal display-none">
+        <button class="close-button" type="button" onclick="closeSubmitForm()">X</button>
+        <form action="submit">
+            <div class="form-component">
+                <label for="haiku-title">title:</label>
+                <input type="text" id="haiku-title">
+            </div>
+            <div class="form-component">
+                <label for="author">author:</label>
+                <input type="text" id="author">
+            </div>
+            <div class="form-component">
+                <label for="tags">tags:</label>
+                <input type="text" id="tags">
+            </div class="button-container">
             <button type="button">submit</button>
             <button type="button">reset</button>
-            <button type="button" onclick="closeSubmitForm()">close</button>
-        </div>
+
+    </div>
     </form>
+    </div>
     <div class="button-container">
-        <button id="done" class="main-buttons" type="button" onclick="showSubmitForm()" >done</button>
-       <!-- <button id="clear" class="main-buttons" type="button" onclick="clearHaiku()">clear</button> -->
+        <button id="done" class="main-buttons" type="button" onclick="showSubmitForm()">done</button>
+        <button id="clear" class="main-buttons" type="button" onclick="clearHaiku()">clear</button>
     </div>
     <script src="index.js"></script>
 </body>
+
 </html>

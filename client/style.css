@@ -60,23 +60,25 @@ body {
 }
 
 #current-word {
-    order: 1;
+    
 }
 
 #synonym-container {
-    background-color: var(--bg-color-secondary);
-    margin-bottom: 1em;
     display: flex;
-    gap: 1 em;
-    padding: .2em;
+    gap: 1em;
+    
 }
 
 .synonym-button {
-    background-color: var(--bg-color-button);
-
+    border: 1px solid black;
+    border-radius: 2px; 
 }
 
 /* Buttons */
+.close-button {
+    
+}
+
 .button-container {
     display: flex;
     justify-content: center;
@@ -90,7 +92,6 @@ form {
     display: flex;
     flex-direction: column;
     gap: 1em;
-    position: absolute;
     bottom: 20%;
     left: 10%;
     right: 10%;
@@ -104,6 +105,18 @@ form {
     flex-basis: 30%
 }
 
+.modal {
+    text-align: right;
+    position: absolute;
+    padding: .5em;
+    left: 20%;
+    right: 20%;
+    top: 30%;
+    height: 300 px;
+    min-height: fit-content;
+    background-color: var(--bg-color-secondary);
+}
+
 .display-none {
-    display: none;
+    display: none !important;
 }
