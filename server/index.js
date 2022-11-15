@@ -4,9 +4,11 @@ const PORT = 5001;
 const wordRepo = require("./repos/wordRepo.js");
 const cors = require('cors');
 
+app.use(cors());
+
+
 app.get("/", (req, res) => {
     console.log("get request recieved");
-    const wordRepo = require('./repos/wordRepo.js');
     wordRepo.get(function (data) {
         res.status(200).json({
             "status": 200,
@@ -23,7 +25,6 @@ app.get("/", (req, res) => {
         })
     });
 });
-app.use(cors());
 
 app.get("/:word", (req, res) => {
     console.log("lookup request recieved.");

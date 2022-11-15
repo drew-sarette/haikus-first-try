@@ -29,7 +29,7 @@ const wordRepo = {
                 }
                 else {
                     console.log("Local lookup failed");
-                    reject(new Error(""));
+                    reject(new Error("Word not found on list"));
                 }
             }
         });
