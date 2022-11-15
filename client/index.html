@@ -13,7 +13,7 @@
     <header>
         <div class="banner">
             <h1>Haikus</h1>
-            <button id="menu-btn" onclick="toggleMenu()"><img src="images/menu-icon.svg" alt=""></button>
+            <button id="menu-btn"><img src="images/menu-icon.svg" alt=""></button>
         </div>
         <nav class="mobile-menu display-none">
             <ul class="main-menu">
@@ -31,13 +31,13 @@
         <div id="line-3" class="haiku-line"></div>
     </div>
     <div id="synonym-popup" class="display-none modal">
-        <button class="close-button" type="button" onclick="hideSynonyms()">X</button>
+        <button id="hide-synonyms" class="close-button" type="button">X</button>
         <div id="synonym-container">
 
         </div>
     </div>
     <div id="form-popup" class="modal display-none">
-        <button class="close-button" type="button" onclick="closeSubmitForm()">X</button>
+        <button id="close-form" class="close-button" type="button">X</button>
         <form action="submit">
             <div class="form-component">
                 <label for="haiku-title">title:</label>
@@ -58,8 +58,8 @@
     </form>
     </div>
     <div class="button-container">
-        <button id="done" class="main-buttons" type="button" onclick="showSubmitForm()">done</button>
-        <button id="clear" class="main-buttons" type="button" onclick="clearHaiku()">clear</button>
+        <button id="done" class="main-buttons" type="button">done</button>
+        <button id="clear" class="main-buttons" type="button">clear</button>
     </div>
     <script src="index.js"></script>
 </body>

@@ -11,6 +11,14 @@ const currentWordInput = document.getElementById("current-word");
 const synonymContainer = document.getElementById("synonym-container");
 const synonymPopup = document.getElementById("synonym-popup");
 
+// Event Listeners =====================================================
+document.getElementById("menu-btn").addEventListener("click", toggleMenu);
+document.getElementById("hide-synonyms").addEventListener("click", hideSynonyms);
+document.getElementById("close-form").addEventListener("click", closeSubmitForm);
+document.getElementById("done").addEventListener("click", showSubmitForm);
+document.getElementById("clear").addEventListener("click", clearHaiku);
+
+
 // Basic page functionality ============================================
 function toggleMenu() {
     document.querySelector("nav").classList.toggle("display-none");
@@ -36,7 +44,7 @@ function closeSubmitForm(ev) {
 function clearHaiku() {
     currentWordInput.value = "";
     hideSynonyms();
-    while (haiku.length) {haiku.pop();} // haiku = [] doesn't work?
+    while (haiku.length) { haiku.pop(); } // haiku = [] doesn't work?
     updateHaikuDisplay();
 }
 
@@ -59,15 +67,15 @@ currentWordInput.addEventListener("keydown", function (ev) {
 });
 
 async function lookUp(word) {
-    // const endpoint = new URL(`http://localhost:${PORT}/${word}`);
-    // const response = await fetch(endpoint);
-    // const result = await response.json();
-    // return result.data;
-    return {
-        word: "test",
-        syllables: 1,
-        synonyms: ["quiz", "trial"]
-    }
+    const endpoint = new URL(`http://localhost:${PORT}/${word}`);
+    const response = await fetch(endpoint);
+    const result = await response.json();
+    return result.data;
+    // return {
+    //     word: "test",
+    //     syllables: 1,
+    //     synonyms: ["quiz", "trial"]
+    // }
 }
 
 async function addWord(wordToAdd) {
@@ -83,7 +91,6 @@ async function addWord(wordToAdd) {
         haiku.push(newWordObj);
         updateHaikuDisplay();
     }
-
 }
 
 function deleteLastWord() {
@@ -95,7 +102,7 @@ function deleteLastWord() {
     }
 }
 
-function checkHaiku () {
+function checkHaiku() {
     let [isFirstLineValid, isSecondLineValid, isThirdLineValid] = [false, false, false];
     let runningSyllableCount = 0;
     for (word of haiku) {
@@ -149,7 +156,7 @@ function updateHaikuDisplay() {
             line3.appendChild(haiku[i].htmlElement);
         }
         if (haiku.length > 0) {
-            haiku[ haiku.length - 1 ].htmlElement.insertAdjacentElement('afterend', currentWordInput);
+            haiku[haiku.length - 1].htmlElement.insertAdjacentElement('afterend', currentWordInput);
             currentWordInput.focus();
         }
     }
