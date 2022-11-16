@@ -51,11 +51,14 @@ const wordRepo = {
             console.log("Requesting");
             // Response contains several "results", each with a possible array of synonyms. Loop through and keep only one-word synonyms.
             let listOfSynonyms = [];
-            response.data.results.forEach(element => {
-                if (element.synonyms) {
-                    element.synonyms.filter(w => !(w.includes(" "))).forEach(w => listOfSynonyms.push(w));
-                }
-            });
+            if (response.data.results) {
+                console.log(response.data.results);
+                response.data.results.forEach(element => {
+                    if (element.synonyms) {
+                        element.synonyms.filter(w => !(w.includes(" "))).forEach(w => listOfSynonyms.push(w));
+                    }
+                });
+            }
             // Get the number of syllables, assuming it is 1 if there is no response.data.syllables
             let numSyllables = 1;
             if (response.data.hasOwnProperty("syllables")) {

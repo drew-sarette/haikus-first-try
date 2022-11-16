@@ -108,6 +108,7 @@ main {
 #synonym-container {
     grid-area: center;
     display: flex;
+    flex-wrap: wrap;
     gap: 1em;
     padding: 1em;
     
@@ -197,5 +198,46 @@ form {
 }
 
 .display-none {
-    display: none !important;
+    display: none;
 }
+
+/* For larger screens: */
+@media only screen and (min-width: 648px) {
+    body {
+        grid-template-areas:
+            "head y    y"
+            "head main aside"
+            "head foot x";
+        grid-template-rows: 5em auto 10%;
+        gap: 5%;
+
+    }
+
+    #menu-btn {
+        display: none;
+    }
+
+    header {
+        grid-area: head;
+        background: none;
+        background: var(--accent);
+        margin-left: 50%;
+    }
+    
+    nav {
+        display: flex;
+        flex-direction:column;
+    }
+
+    main {
+        grid-area: main;
+    }
+    .modal {
+        position: static;
+        grid-area: aside;
+    }
+
+    footer {
+        grid-area: foot;
+    }
+  }
