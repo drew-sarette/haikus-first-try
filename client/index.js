@@ -49,7 +49,7 @@ function clearHaiku() {
 }
 
 // Haiku input ===========================================================
-
+// The currentWordInput listens for space, enter or backspace, and calls the appropriate function to update the haiku
 currentWordInput.addEventListener("keydown", function (ev) {
     ev.preventDefault();
     ev.stopPropagation();
@@ -66,20 +66,22 @@ currentWordInput.addEventListener("keydown", function (ev) {
     }
 });
 
+//connects to server to get the syllables/synonyms of the word to be added or changed
 async function lookUp(word) {
-    // const endpoint = new URL(`http://localhost:${PORT}/${word}`);
-    // const response = await fetch(endpoint);
-    // const result = await response.json();
-    // return result.data;
-    return {
-        word: "test",
-        syllables: 1,
-        synonyms: ["quiz", "trial"]
-    }
+    const endpoint = new URL(`http://localhost:${PORT}/${word}`);
+    const response = await fetch(endpoint);
+    const result = await response.json();
+    return result.data;
+    // Dummy response for testing
+    // return { 
+    //     word: "test",
+    //     syllables: 1,
+    //     synonyms: ["quiz", "trial"]
+    // }
 }
 
+// Use lookup data to create an object containing the word, syllables, and synonyms before pushing to array
 async function addWord(wordToAdd) {
-
     if (wordToAdd.trim()) {
         const newWordObj = await lookUp(wordToAdd);
         const newSpan = document.createElement("span");
@@ -93,6 +95,7 @@ async function addWord(wordToAdd) {
     }
 }
 
+//Either resets the value of currentWordInput or removes the last word of the haiku
 function deleteLastWord() {
     if (currentWordInput.value.trim() != "") {
         currentWordInput.value = null;
@@ -102,6 +105,7 @@ function deleteLastWord() {
     }
 }
 
+// Loop through array and count syllables, noting if the total is correct for a 5-7-5 haiku
 function checkHaiku() {
     let [isFirstLineValid, isSecondLineValid, isThirdLineValid] = [false, false, false];
     let runningSyllableCount = 0;
@@ -124,6 +128,7 @@ function checkHaiku() {
     return [isFirstLineValid, isSecondLineValid, isThirdLineValid];
 }
 
+// Removes all displayed words, and then loops through the haiku, placing each word on the appropriate line for the number of syllables.
 function updateHaikuDisplay() {
     document.querySelectorAll("span").forEach(span => span.parentElement.removeChild(span));
     const [line1IsValid, line2IsValid, line3IsValid] = checkHaiku();
@@ -163,6 +168,7 @@ function updateHaikuDisplay() {
 
 }
 
+//display the synonyms of the selected word, adding event listener to replace the word selected.
 function showSynonyms(arrOfSynonyms, index) {
     synonymContainer.innerHTML = null;
     arrOfSynonyms.forEach(synonym => {
@@ -175,6 +181,7 @@ function showSynonyms(arrOfSynonyms, index) {
     synonymPopup.classList.remove("display-none");
 }
 
+// looks up the selected synonym, creates a new word object, updates the haiku array, and redoes the display
 async function substituteSynonym(synonym, index) {
     const wordObj = await lookUp(synonym);
     const newSpan = document.createElement("span");
