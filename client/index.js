@@ -67,15 +67,15 @@ currentWordInput.addEventListener("keydown", function (ev) {
 });
 
 async function lookUp(word) {
-    const endpoint = new URL(`http://localhost:${PORT}/${word}`);
-    const response = await fetch(endpoint);
-    const result = await response.json();
-    return result.data;
-    // return {
-    //     word: "test",
-    //     syllables: 1,
-    //     synonyms: ["quiz", "trial"]
-    // }
+    // const endpoint = new URL(`http://localhost:${PORT}/${word}`);
+    // const response = await fetch(endpoint);
+    // const result = await response.json();
+    // return result.data;
+    return {
+        word: "test",
+        syllables: 1,
+        synonyms: ["quiz", "trial"]
+    }
 }
 
 async function addWord(wordToAdd) {

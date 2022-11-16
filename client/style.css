@@ -1,85 +1,154 @@
 :root {
-    --bg-color-primary: blanchedalmond;
-    --bg-color-secondary: lightgray;
-    --bg-color-button: firebrick;
-    --accent-color: black;
-    --text-color: black;
-    --highlight-color: red;
+    --neutral: #efefdf;
+    --accent: #e53f0c;
+    --accent-2: #25a244;
+    --dark: #222222;
+    --lighter: #333333;
+}
+* {
+    box-sizing: border-box;
+}
+html {
+    height: 100%;
 }
 
 body {
-    background-color: var(--bg-color-primary);
+    background-color: var(--neutral);
+    height:100%;
     color: var(--text-color);
     font-size: 16px;
+    display: grid;
+    grid-template-areas:
+        "head"
+        "main"
+        "aside"
+        "foot";
+    grid-template-rows: max-content auto max-content 10%;
 }
 
 /* Header Styles */
+header {
+    grid-area: head;
+    color: var(--dark);
+    background: linear-gradient(to right, var(--neutral) 70%, var(--accent) 30%);
+}
+
 .banner {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    padding: 0 1em;
 }
 
 #menu-btn {
-    justify-self: right;
     background-color: inherit;
     border: none;
     width: 40px;
 }
 
-.menu-item {
+.menu-item, .menu-item a {
     list-style: none;
+    text-decoration: none;
+}
+a:link {
+    color: var(--dark);
+}
+a:hover, a:active {
+    font-weight: bold;
+}
+a:visited {
+    color: var(--dark);
 }
 
 /*  Haiku input  */
+main {
+    grid-area: main;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 #haiku-container {
-    background: var(--bg-color-secondary);
-    height: 7em;
-    padding: 1em;
+    background: var(--dark);
+    min-height: 15em;
+    min-width: 100%;
     display: flex;
     flex-direction: column;
     gap: .5em;
     justify-content: space-between;
-    height: fit-content;
-    margin-bottom: 1em;
+    padding: 1em 1.5em;
 }
 
 .haiku-line {
     display: flex; 
+    flex-wrap: wrap;
     gap:.6em;
 }
 
 .haiku-word {
-    border: 1px solid black;
-    border-radius: 2px;
     padding: .2em;
+    color: var(--neutral);
 }
 
 .valid-word {
-    box-shadow: 0px 0px 2px 2px green;
+    background: var(--dark);
+    color: var(--neutral);
+    border-bottom: .2em solid var(--accent-2);
 }
 
 #current-word {
-    
+    width: 8em;
+    border-radius: none;
+}
+#current-word:focus {
+    border: 3px solid var(--accent);
+    outline: none;
 }
 
 #synonym-container {
+    grid-area: center;
     display: flex;
     gap: 1em;
+    padding: 1em;
     
 }
 
 .synonym-button {
-    border: 1px solid black;
-    border-radius: 2px; 
+    color: var(--neutral);
+}
+ 
+.synonym-button:hover {
+    color: var(--neutral);
+    border-bottom: var(--accent);
+}
+
+/* footer */
+footer {
+    grid-area: foot;
+    text-align: center;
 }
 
 /* Buttons */
+button {
+    color: var(--neutral);
+    border: none;
+    border-radius: 10px;
+    background-color: var(--dark);
+    width: 80px;
+    height: 50px;
+}
 .close-button {
-    
+    width: 30px;
+    height: 30px;
+    font-weight: 900;
+    border: none;
+    border-radius: 50%;
+    color: var(--accent);
 }
 
 .button-container {
+    margin: 2em 0;
+    grid-area: center;
     display: flex;
     justify-content: center;
     gap: 2em;
@@ -87,22 +156,32 @@ body {
 
 /* Submit Form */
 form {
-    border: 1px solid black;
     padding: 1em;
     display: flex;
     flex-direction: column;
     gap: 1em;
-    bottom: 20%;
-    left: 10%;
-    right: 10%;
 }
 
 .form-component {
     display: flex;
+    justify-content: space-between;
 }
 
 .form-component > label {
-    flex-basis: 30%
+    color: var(--neutral);
+    flex-basis: 20%;
+    text-align: left;
+}
+
+.form-component > input {
+    width: 10em;
+    border-radius: none;
+    border: none;
+    background-color: var(--neutral);
+}
+
+.form-component > input:focus {
+    outline: 3px solid var(--accent);
 }
 
 .modal {
@@ -112,9 +191,9 @@ form {
     left: 20%;
     right: 20%;
     top: 30%;
-    height: 300 px;
-    min-height: fit-content;
-    background-color: var(--bg-color-secondary);
+    min-height: 200px;
+    border-radius: 10px;
+    background-color: var(--lighter);
 }
 
 .display-none {
