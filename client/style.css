@@ -13,6 +13,7 @@ html {
 }
 
 body {
+    margin: 0;
     background-color: var(--neutral);
     height:100%;
     color: var(--text-color);
@@ -71,7 +72,8 @@ main {
 #haiku-container {
     background: var(--dark);
     min-height: 15em;
-    min-width: 100%;
+    width:100%;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     gap: .5em;
@@ -207,10 +209,10 @@ form {
         grid-template-areas:
             "head y    y"
             "head main aside"
+            "head modal aside"
             "head foot x";
-        grid-template-rows: 5em auto 10%;
-        gap: 5%;
-
+        grid-template-rows: 4em max-content auto 10%;
+        gap: 2em;
     }
 
     #menu-btn {
@@ -225,16 +227,28 @@ form {
     }
     
     nav {
+        display: block !important;
+    }
+    
+    nav > ul {
         display: flex;
-        flex-direction:column;
+        flex-direction: column;
+        gap: 2em;
     }
 
     main {
         grid-area: main;
     }
+    
+    #haiku-container {
+        border-radius: 10px;
+    }
+
+
     .modal {
         position: static;
-        grid-area: aside;
+        grid-area: modal;
+        background-color: var(--dark);
     }
 
     footer {
