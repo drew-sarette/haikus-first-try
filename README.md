@@ -20,3 +20,11 @@ On the back-end, previously submitted haikus will be served by an express server
 - ```cd server && node index.js```
 - open haikus/server/index.html in browser (Live Server does not work!)
 - Write a haiku!
+
+# What I learned
+I found using callbacks, promises, and async/await all useful in this project. For a simple Fetch call, async/await makes everything easy to read and understand. Because of the differences between commonJS using require and module.exports, as opposed to the ES syntax, I ended up going with Axios on the server because node-fetch was incompatible with commonJS. As a beginner, I found that using callbacks for the logic made it easier to handle different outcomes since I could more easily see what functions would be called. I understand that chaining promises would ultimately be a better solution, and will be using those in the future.
+
+# Credits
+dcode Using Async/Await with the Fetch API https://youtu.be/Yp9KIcSKTNo
+web dev simplified  Learn Express JS In 35 Minutes https://youtu.be/SccSCuHhOw0
+Paul Sherrif JS REST APIs: Getting Started https://www.pluralsight.com/courses/javascript-rest-apis-getting-started
