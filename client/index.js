@@ -68,9 +68,10 @@ currentWordInput.addEventListener("keydown", function (ev) {
 
 //connects to server to get the syllables/synonyms of the word to be added or changed
 async function lookUp(word) {
-    const endpoint = new URL(`https://Haikus-server.drew-sarette.repl.co/${word}`);
+    const endpoint = new URL(`https://Haikus-server.drew-sarette.repl.co`);
     const response = await fetch(endpoint);
     const result = await response.json();
+    console.log(result);
     return result.data;
     // Dummy response for testing
     // return { 
@@ -81,9 +82,9 @@ async function lookUp(word) {
 }
 
 // Use lookup data to create an object containing the word, syllables, and synonyms before pushing to array
-async function addWord(wordToAdd) {
+function addWord(wordToAdd) {
     if (wordToAdd.trim()) {
-        const newWordObj = await lookUp(wordToAdd);
+        const newWordObj = lookUp(wordToAdd);
         const newSpan = document.createElement("span");
         newSpan.textContent = newWordObj.word;
         newSpan.classList.add("haiku-word");
